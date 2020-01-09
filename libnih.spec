@@ -1,6 +1,6 @@
 Name:           libnih
 Version:        1.0.1
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Lightweight application development library
 
 Group:          System Environment/Libraries
@@ -49,7 +49,7 @@ developing applications that use %{name}.
 %build
 sed -i 's:$(prefix)/lib:$(prefix)/%{_lib}:g' nih{,-dbus}/Makefile.am
 autoreconf -i --force
-%configure --disable-static --disable-rpath --libdir=/%{_lib}
+%configure --disable-static --disable-rpath --libdir=/%{_lib} LDFLAGS="$LDFLAGS -Wl,-z,relro"
 sed -i -e 's! -shared ! -Wl,--as-needed\0!g' libtool
 make %{?_smp_mflags}
 
@@ -99,6 +99,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Aug 09 2011 Petr Lautrbach <plautrba@redhat.com> 1.0.1-7
+- use -Wl,-z,relro flags
+
 * Fri Feb 26 2010 Petr Lautrbach <plautrba@redhat.com> 1.0.1-6
 - Add "make check" with "--with check" option
 
