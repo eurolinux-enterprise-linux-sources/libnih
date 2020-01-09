@@ -1,6 +1,6 @@
 Name:           libnih
 Version:        1.0.1
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Lightweight application development library
 
 Group:          System Environment/Libraries
@@ -8,6 +8,7 @@ License:        GPLv2
 URL:            https://launchpad.net/libnih
 Source0:        http://launchpad.net/libnih/1.0/1.0.1/+download/libnih-1.0.1.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Patch1:         libnih-1.0.1-handle-full-inotify-queue.patch
 
 BuildRequires:  autoconf >= 2.62
 BuildRequires:  gettext >= 0.17
@@ -44,7 +45,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-
+%patch1 -p1
 
 %build
 sed -i 's:$(prefix)/lib:$(prefix)/%{_lib}:g' nih{,-dbus}/Makefile.am
@@ -99,6 +100,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Feb 09 2018 Lukas Nykryn <lnykryn@redhat.com> - 1.0.1-8
+- handle full inotify queue
+
 * Tue Aug 09 2011 Petr Lautrbach <plautrba@redhat.com> 1.0.1-7
 - use -Wl,-z,relro flags
 
